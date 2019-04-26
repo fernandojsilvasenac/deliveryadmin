@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{title}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <form [formGroup]="form">
+        <ion-item>
+            <ion-label stacked>Nome</ion-label>
+            <ion-input type="text" formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="!form.controls.name.valid && (form.controls.name.dirty || form.controls.name.touched)"
+            color="danger">
+            <div [hidden]="!form.controls.name.errors.required">
+              O campo é obrigatório
+            </div>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Categorias</ion-label>
+            <ion-select formControlName="categoryKey" (ionChange)="getCategorias()" interface="popover">
+              <ion-option value="" [selected]="true">Selecione</ion-option>
+              <ion-option *ngFor="let category of categories | async" [value]="category.key">{{ category.nome }}</ion-option>
+            </ion-select>
+        </ion-item>
+
+
+      <ion-item>
+        <ion-label class="form-control-label">Preço</ion-label>
+        <ion-input type="number" step="1" min="0.1" class="form-control" formControlName="price"></ion-input>
+      </ion-item>
+
+    <ion-item>
+        <ion-label stacked>Descriçao</ion-label>
+        <ion-input type="text" formControlName="description"></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="imgUrl ==''">
+      <ion-label class="form-control-label">Foto</ion-label>
+      <ion-input type="file" class="form-control" accept="image/png,image/jpeg" (change)="upload($event)" formControlName="img"></ion-input>
+      <ion-item *ngIf="form.controls.img.invalid && (form.controls.img.dirty || form.controls.img.touched)" class="text-danger">
+        <div *ngIf="form.controls.img.errors.imgType">
+          Os formatos permitidos de imagem são: png e jpeg
+        </div>
+      </ion-item>
+    </ion-item>
+    <ion-item class="form-group" [hidden]="!hasImg">
+      <img src="{{ form.controls.imgUrl.value }}" class="img-thumbnail d-block" style="max-width: 100px;" [hidden]="!hasImg" />
+      <button class="btn btn-secondary mt-2" type="button" (click)="removerImg()"><i class="fa fa-times" aria-hidden="true"></i> Remover imagem</button>
+    </ion-item>
+    <div padding>
+        <button ion-button block type="submit" [disabled]="!form.valid" (click)="onSubmit()">Salvar</button>
+    </div>
+
+  </form>
+</ion-content>

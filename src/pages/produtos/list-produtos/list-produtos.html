@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Lista de Produtos</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+    <ion-list>
+        <ion-item-sliding *ngFor="let item of produtos | async">
+          <ion-item>
+            <h2>{{ item.data.name }}</h2>
+            <ion-avatar item-start>
+              <img src="{{ item.data.imgUrl }}" class="img-thumbnail" style="max-width: 100px;" [hidden]="item.data.imgUrl == ''" />
+            </ion-avatar>
+            <p class="text-right">{{ item.data.price | currency:'BRL':true }}</p>
+            <p>{{ item.data.categoryName }}</p>
+          </ion-item>
+          <ion-item-options side="left">
+            <button ion-button color="secondary" (click)="editItemProdutos(item)"><ion-icon name="create"></ion-icon>Editar</button>
+          </ion-item-options>
+          <ion-item-options side="right">
+              <button ion-button color="danger" (click)="removeItemProdutos(item.key, item)"><ion-icon name="trash"></ion-icon>Remover</button>
+          </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+
+      <ion-fab right bottom>
+        <button ion-fab color="secondary" (click)="newItemProdutos()"><ion-icon name="add"></ion-icon></button>
+      </ion-fab>
+
+</ion-content>
